@@ -24,7 +24,7 @@ namespace BOTRPA
         private void button1_Click(object sender, EventArgs e)
         {
             //Ler Excel
-            string fileName = @"C:\Users\jeanm\source\repos\BOTRPA\Lista_de_CEPs - DESAFIO RPA - Copy.xlsx";
+            string fileName = @"C:\Users\jeanm\OneDrive\Documentos\Desafio RPA Paschoalotto\Arquivo_de_entrada.xlsx";
             var xls = new XLWorkbook(fileName);
             var worksheet = xls.Worksheets.First(w => w.Name == "Lista de CEPs");
             var totalRows = worksheet.Rows().Count();
@@ -86,7 +86,7 @@ namespace BOTRPA
 
             IXLWorkbook workbook = new XLWorkbook();
             IXLWorksheet worksheet = workbook.Worksheets.Add("Lista de CEP's");
-            string path = @"C:\Users\jeanm\source\repos\BOTRPA\Resultado.xlsx";
+            string path = @"C:\Users\jeanm\OneDrive\Documentos\Desafio RPA Paschoalotto\Resultado.xlsx";
 
             for (int i = 0; i <= 4; i++)
             {
@@ -113,11 +113,12 @@ namespace BOTRPA
             {
                 if (column == 5)
                 {
-                    worksheet.Cell(row, column).Value = DateTime.Now;
+                    
                     column = 1;
                     row++;
                 }
                 worksheet.Cell(row, column).Value = string.IsNullOrEmpty(resultado[i].ToString()) ? "não informado" : resultado[i].ToString();
+                worksheet.Cell(row, 5).Value = DateTime.Now.ToString("dd-MMM-yyyy-HH:mm:ss");
                 workbook.SaveAs(path);
                 column++;
             }
