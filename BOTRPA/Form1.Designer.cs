@@ -32,6 +32,8 @@
             this.inputCEP = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.qtCEP = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // inputCEP
@@ -65,18 +67,38 @@
             this.label1.TabIndex = 2;
             this.label1.Text = "CEP";
             // 
+            // qtCEP
+            // 
+            this.qtCEP.Location = new System.Drawing.Point(157, 136);
+            this.qtCEP.Name = "qtCEP";
+            this.qtCEP.Size = new System.Drawing.Size(38, 20);
+            this.qtCEP.TabIndex = 3;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.Red;
+            this.label2.Location = new System.Drawing.Point(154, 120);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(53, 13);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "nº CEPs";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Gold;
             this.ClientSize = new System.Drawing.Size(219, 161);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.qtCEP);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.inputCEP);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Localizar CEP";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -87,6 +109,8 @@
         private System.Windows.Forms.TextBox inputCEP;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox qtCEP;
+        private System.Windows.Forms.Label label2;
     }
 }
 

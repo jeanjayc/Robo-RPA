@@ -35,20 +35,18 @@ namespace BOTRPA
             for (int i = 2; i <= totalLinhas; i++)
             {
                 CEPs.Add(planilha.Cell($"B{i}").Value.ToString());
-                //CEP = CEPInicial;
-
             }
             IWebDriver driver = new ChromeDriver(@"C:\WebDriver\bin\WebDriver\bin\");
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
 
             var result = new List<string>();
             var result2 = new List<string>();
-
+            int contadorCEP = 0;
             foreach (var cep in CEPs)
             {
                 driver.Navigate().GoToUrl("http://www.buscacep.correios.com.br/sistemas/buscacep/");
                 driver.FindElement(By.Name("relaxation")).SendKeys(cep + OpenQA.Selenium.Keys.Enter);
-                inputCEP.Text = CEP;
+                inputCEP.Text = cep;
                 List<IWebElement> elements = driver.FindElements(By.TagName("th")).ToList();
                 foreach (var element in elements)
                 {
@@ -59,20 +57,28 @@ namespace BOTRPA
                 {
                     result2.Add(element.Text);
                 }
+                contadorCEP++;
+                qtCEP.Text = contadorCEP.ToString();
             }
-            BuscaCEP(result, result2);
+            MontaExcel(result, result2);
 
         }
 
-        private void BuscaCEP(List<string> elements, List<string> elements1)
+        private void MontaExcel(List<string> elements, List<string> elements1)
         {
 
             IXLWorkbook workbook = new XLWorkbook();
             IXLWorksheet worksheet = workbook.Worksheets.Add("Lista de CEP's");
             string path = @"C:\Users\jeanm\source\repos\BOTRPA\Resultado.xlsx";
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i <= 4; i++)
             {
+                if(i == 4)
+                {
+                    worksheet.Cell(1, 5).Value = "Data da Busca";
+                    workbook.SaveAs(path);
+                    break;
+                }
                 worksheet.Cell(1, i + 1).Value = elements[i].ToString();
                 workbook.SaveAs(path);
             }
@@ -90,6 +96,7 @@ namespace BOTRPA
             {
                 if (column == 5)
                 {
+                    worksheet.Cell(row, column).Value = DateTime.Now;
                     column = 1;
                     row++;
                 }
@@ -97,7 +104,8 @@ namespace BOTRPA
                 workbook.SaveAs(path);
                 column++;
             }
+            
         }
     }
 }
-    
+
