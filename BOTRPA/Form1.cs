@@ -23,24 +23,22 @@ namespace BOTRPA
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string CEP = String.Empty;
-            //
+
             string fileName = @"C:\Users\jeanm\source\repos\BOTRPA\Lista_de_CEPs - DESAFIO RPA - Copy.xlsx";
             var xls = new XLWorkbook(fileName);
-            var planilha = xls.Worksheets.First(w => w.Name == "Lista de CEPs");
-            var totalLinhas = planilha.Rows().Count();
-            // primeira linha é o cabecalho
+            var worksheet = xls.Worksheets.First(w => w.Name == "Lista de CEPs");
+            var totalRows = worksheet.Rows().Count();
 
             List<string> CEPs = new List<string>();
-            for (int i = 2; i <= totalLinhas; i++)
+            for (int i = 2; i <= totalRows; i++)
             {
-                CEPs.Add(planilha.Cell($"B{i}").Value.ToString());
+                CEPs.Add(worksheet.Cell($"B{i}").Value.ToString());
             }
             IWebDriver driver = new ChromeDriver(@"C:\WebDriver\bin\WebDriver\bin\");
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
 
-            var result = new List<string>();
-            var result2 = new List<string>();
+            var headerElements = new List<string>();
+            var bodyElements = new List<string>();
             int contadorCEP = 0;
             foreach (var cep in CEPs)
             {
@@ -50,21 +48,21 @@ namespace BOTRPA
                 List<IWebElement> elements = driver.FindElements(By.TagName("th")).ToList();
                 foreach (var element in elements)
                 {
-                    result.Add(element.Text);
+                    headerElements.Add(element.Text);
                 }
                 List<IWebElement> elements1 = driver.FindElements(By.TagName("td")).ToList();
                 foreach (var element in elements1)
                 {
-                    result2.Add(element.Text);
+                    bodyElements.Add(element.Text);
                 }
                 contadorCEP++;
                 qtCEP.Text = contadorCEP.ToString();
             }
-            MontaExcel(result, result2);
+            MontaExcel(headerElements, bodyElements);
 
         }
 
-        private void MontaExcel(List<string> elements, List<string> elements1)
+        private void MontaExcel(List<string> headerElements, List<string> bodyElements)
         {
 
             IXLWorkbook workbook = new XLWorkbook();
@@ -79,13 +77,13 @@ namespace BOTRPA
                     workbook.SaveAs(path);
                     break;
                 }
-                worksheet.Cell(1, i + 1).Value = elements[i].ToString();
+                worksheet.Cell(1, i + 1).Value = headerElements[i].ToString();
                 workbook.SaveAs(path);
             }
 
             List<string> resultado = new List<string>();
 
-            foreach (var element in elements1)
+            foreach (var element in bodyElements)
             {
                 resultado.Add(element.ToString());
             }
