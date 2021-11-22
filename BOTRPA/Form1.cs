@@ -23,40 +23,59 @@ namespace BOTRPA
 
         private void button1_Click(object sender, EventArgs e)
         {
-
+            //Ler Excel
             string fileName = @"C:\Users\jeanm\source\repos\BOTRPA\Lista_de_CEPs - DESAFIO RPA - Copy.xlsx";
             var xls = new XLWorkbook(fileName);
             var worksheet = xls.Worksheets.First(w => w.Name == "Lista de CEPs");
             var totalRows = worksheet.Rows().Count();
 
+            //Add a uma lista os CEP's extraidos do excel
             List<string> CEPs = new List<string>();
             for (int i = 2; i <= totalRows; i++)
             {
                 CEPs.Add(worksheet.Cell($"B{i}").Value.ToString());
             }
+            //Configuracao Selenium Chrome
             IWebDriver driver = new ChromeDriver(@"C:\WebDriver\bin\WebDriver\bin\");
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
 
+            //lista que ira receber os titulos dos campos a partir do html
             var headerElements = new List<string>();
+
+            //lista que ira receber os resultados da busca de cada CEP a partir do html
             var bodyElements = new List<string>();
-            int contadorCEP = 0;
+
+            //contador que ira mostra a quantidade de ceps extraidos
+            int counterCEP = 0;
             foreach (var cep in CEPs)
             {
+                //Abre o navegador
                 driver.Navigate().GoToUrl("http://www.buscacep.correios.com.br/sistemas/buscacep/");
+
+                //Seleciona a tag onde deve ser inserido o CEP no site dos correios
                 driver.FindElement(By.Name("relaxation")).SendKeys(cep + OpenQA.Selenium.Keys.Enter);
+                //Exibe o CEP atual que esta sendo buscado na interface do programa
                 inputCEP.Text = cep;
+
+                //buscando os dados dos theader para montar o cabalho do excel
                 List<IWebElement> elements = driver.FindElements(By.TagName("th")).ToList();
+                //populando o cabecalho
+
                 foreach (var element in elements)
                 {
                     headerElements.Add(element.Text);
                 }
+
+                //buscando os dados do corpo para montar a planilha do excel com os resultados da busca de cada cep
                 List<IWebElement> elements1 = driver.FindElements(By.TagName("td")).ToList();
+
+                //populando a planilha
                 foreach (var element in elements1)
                 {
                     bodyElements.Add(element.Text);
                 }
-                contadorCEP++;
-                qtCEP.Text = contadorCEP.ToString();
+                counterCEP++;
+                qtCEP.Text = counterCEP.ToString();
             }
             MontaExcel(headerElements, bodyElements);
 
