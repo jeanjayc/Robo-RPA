@@ -24,7 +24,7 @@ namespace BOTRPA
         private void button1_Click(object sender, EventArgs e)
         {
             //Ler Excel
-            string fileName = @"C:\Users\jeanm\OneDrive\Documentos\Desafio RPA Paschoalotto\Arquivo_de_entrada.xlsx";
+            string fileName = @"C:\Users\jeanm\OneDrive\Documentos\Result\Arquivo_de_entrada.xlsx";
             var xls = new XLWorkbook(fileName);
             var worksheet = xls.Worksheets.First(w => w.Name == "Lista de CEPs");
             var totalRows = worksheet.Rows().Count();
@@ -57,7 +57,7 @@ namespace BOTRPA
                 //Exibe o CEP atual que esta sendo buscado na interface do programa
                 inputCEP.Text = cep;
 
-                //buscando os dados dos theader para montar o cabalho do excel
+                //buscando os dados dos theader para montar o cabecalho do excel
                 List<IWebElement> elements = driver.FindElements(By.TagName("th")).ToList();
                 //populando o cabecalho
 
@@ -86,7 +86,7 @@ namespace BOTRPA
 
             IXLWorkbook workbook = new XLWorkbook();
             IXLWorksheet worksheet = workbook.Worksheets.Add("Lista de CEP's");
-            string path = @"C:\Users\jeanm\OneDrive\Documentos\Desafio RPA Paschoalotto\Resultado.xlsx";
+            string path = @"C:\Users\jeanm\OneDrive\Documentos\Result\Resultado.xlsx";
 
             for (int i = 0; i <= 4; i++)
             {
